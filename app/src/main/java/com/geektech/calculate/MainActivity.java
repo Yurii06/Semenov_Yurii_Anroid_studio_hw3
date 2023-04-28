@@ -5,6 +5,7 @@ import static java.lang.Integer.parseInt;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,13 +19,21 @@ public class MainActivity extends AppCompatActivity {
     private String onOperation = "";
     private Boolean isOperationClick;
     private Boolean isEqualDoubleClick;
+    private Button resultButton;
 
+
+
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.text_view);
+        resultButton = findViewById(R.id.btn_result);
+        resultButton.setVisibility(View.INVISIBLE);
     }
+
 
     @SuppressLint("NonConstantResourceId")
     public void onNumberClick(View view) {
@@ -63,9 +72,21 @@ public class MainActivity extends AppCompatActivity {
                 clickingOnNumbers(view);
                 break;
 
+
+
         }
         isOperationClick = false;
         isEqualDoubleClick = false;
+        resultButton.setVisibility(View.INVISIBLE);
+
+        resultButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                intent.putExtra("result", resultButton.toString());
+                startActivity(intent);
+            }
+        });
     }
 
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
@@ -102,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btn_equal:
                 calculate(onOperation);
+                resultButton.setVisibility(View.VISIBLE);
                 break;
         }
         isOperationClick = true;
